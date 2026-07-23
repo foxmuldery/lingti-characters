@@ -126,6 +126,26 @@ body{background:#0a0a14;color:#e0d8c8;font-family:"PingFang SC","Noto Serif SC",
 .pw-err{margin-top:14px;font-size:13px;color:rgba(200,100,80,.7);
   letter-spacing:.05em;min-height:18px}
 
+
+/* ── Overview Grid ── */
+.overview-wrap{max-width:1200px;margin:0 auto;padding:0 24px 8px}
+.overview-title{font-size:15px;letter-spacing:.12em;color:rgba(200,180,140,.4);
+  margin-bottom:16px;text-align:center}
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:14px;padding-bottom:8px}
+.ov-card{background:#111524;border:1px solid rgba(140,120,80,.15);
+  border-radius:8px;overflow:hidden;cursor:pointer;text-decoration:none;
+  transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+.ov-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.5),0 0 20px rgba(180,140,80,.08);
+  border-color:rgba(180,140,80,.4)}
+.ov-card .ov-thumb{width:100%;aspect-ratio:3/4;overflow:hidden;background:#0a0d16}
+.ov-card .ov-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.ov-card:hover .ov-thumb img{transform:scale(1.06)}
+.ov-card .ov-info{padding:10px 10px 12px;text-align:center}
+.ov-card .ov-code{font-size:13px;color:#d4c8a0;letter-spacing:.04em;margin-bottom:3px}
+.ov-card .ov-name{font-size:16px;color:#e0d4b8;letter-spacing:.06em;margin-bottom:4px}
+.ov-card .ov-count{font-size:11px;color:rgba(180,150,110,.35);letter-spacing:.04em}
+
 /* ── Responsive ── */
 @media(max-width:900px){
   .gallery{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
@@ -184,6 +204,13 @@ body{background:#0a0a14;color:#e0d8c8;font-family:"PingFang SC","Noto Serif SC",
     <p class="meta">16 个角色 · 94 张概念设计图</p>
   </div>
 
+  
+  <!-- ═══ 角色总览 ═══ -->
+  <div class="overview-wrap">
+    <div class="overview-title">角 色 总 览</div>
+    <div class="overview-grid" id="overviewGrid"></div>
+  </div>
+
   <div id="content-root"></div>
 
   <div class="footer">灵 体 · 见 光 死 角 色 造 型</div>
@@ -227,6 +254,26 @@ CHARS.forEach(function(c){
   a.setAttribute("data-section", c.section_id);
   nav.appendChild(a);
 });
+
+
+/* ── Build Overview ── */
+var ovGrid = document.getElementById("overviewGrid");
+CHARS.forEach(function(c){{
+  var firstImg = c.images[0];
+  var card = document.createElement("div");
+  card.className = "ov-card";
+  // Click scrolls to section; also sets hash so sidebar updates
+  card.onclick = function(){{
+    var el = document.getElementById(c.section_id);
+    if (el) el.scrollIntoView({{behavior:"smooth"}});
+    history.replaceState(null, "", "#" + c.section_id);
+  }};
+  card.innerHTML = '<div class="ov-thumb"><img src="' + firstImg.thumb + '" alt="' + c.name + '" loading="eager"></div>' +
+    '<div class="ov-info"><div class="ov-code">' + c.code + '</div><div class="ov-name">' + c.name + '</div>' +
+    '<div class="ov-count">' + c.count + ' 张</div></div>';
+  ovGrid.appendChild(card);
+}});
+
 
 /* ── Build Content ── */
 var root = document.getElementById("content-root");
