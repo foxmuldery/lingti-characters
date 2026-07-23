@@ -258,21 +258,21 @@ CHARS.forEach(function(c){
 
 /* ── Build Overview ── */
 var ovGrid = document.getElementById("overviewGrid");
-CHARS.forEach(function(c){{
+CHARS.forEach(function(c){
   var firstImg = c.images[0];
   var card = document.createElement("div");
   card.className = "ov-card";
   // Click scrolls to section; also sets hash so sidebar updates
-  card.onclick = function(){{
+  card.onclick = function(){
     var el = document.getElementById(c.section_id);
-    if (el) el.scrollIntoView({{behavior:"smooth"}});
+    if (el) el.scrollIntoView({behavior:"smooth"});
     history.replaceState(null, "", "#" + c.section_id);
-  }};
+  };
   card.innerHTML = '<div class="ov-thumb"><img src="' + firstImg.thumb + '" alt="' + c.name + '" loading="eager"></div>' +
     '<div class="ov-info"><div class="ov-code">' + c.code + '</div><div class="ov-name">' + c.name + '</div>' +
     '<div class="ov-count">' + c.count + ' 张</div></div>';
   ovGrid.appendChild(card);
-}});
+});
 
 
 /* ── Build Content ── */
