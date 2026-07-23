@@ -285,7 +285,7 @@ var curIdx = 0;
 function openLb(idx){
   curIdx = idx;
   var img = ALL_IMGS[idx];
-  lbImg.src = img.full;
+  lbImg.src = img.full; /* fallback: if full 404s, use thumb */ lbImg.onerror = function(){ lbImg.src = img.thumb; lbImg.onerror = null; };
   lbInfo.textContent = img.label;
   lbCounter.textContent = (idx+1) + " / " + ALL_IMGS.length;
   lb.classList.add("show");
